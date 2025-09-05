@@ -135,36 +135,36 @@ def process_query(query: str) -> str:
     return full_output
 
 
-import pickle
+# import pickle
 
-# Save SentenceTransformer
-with open("embed_model.pkl", "wb") as f:
-    pickle.dump(embed_model, f)
+# # Save SentenceTransformer
+# with open("embed_model.pkl", "wb") as f:
+#     pickle.dump(embed_model, f)
 
-# Save CrossEncoder
-with open("reranker.pkl", "wb") as f:
-    pickle.dump(reranker, f)
+# # Save CrossEncoder
+# with open("reranker.pkl", "wb") as f:
+#     pickle.dump(reranker, f)
 
-# Save HuggingFace summarizer pipeline
-with open("summarizer.pkl", "wb") as f:
-    pickle.dump(summarizer, f)
+# # Save HuggingFace summarizer pipeline
+# with open("summarizer.pkl", "wb") as f:
+#     pickle.dump(summarizer, f)
 
-# Save FAISS index and DataFrame
-torch.save(embeddings, "embeddings.pt")
-df.to_pickle("df.pkl")
-faiss.write_index(index, "faiss_index.index")
+# # Save FAISS index and DataFrame
+# torch.save(embeddings, "embeddings.pt")
+# df.to_pickle("df.pkl")
+# faiss.write_index(index, "faiss_index.index")
 
 
 
-# === Launch Gradio App ===
-# gr.Interface(
-#     fn=process_query,
-#     inputs=gr.Textbox(label="❓ Ask your mental health question here", placeholder="e.g. How can I deal with anxiety about work?", lines=2),
-#     outputs=gr.Markdown(label="🩺 Top Therapist Answers"),
-#     title="🧘 CounselChat Q&A Assistant",
-#     description="Explain in brief about your problems.",
-#     allow_flagging="never"
-# ).launch()
+# # === Launch Gradio App ===
+# # gr.Interface(
+# #     fn=process_query,
+# #     inputs=gr.Textbox(label="❓ Ask your mental health question here", placeholder="e.g. How can I deal with anxiety about work?", lines=2),
+# #     outputs=gr.Markdown(label="🩺 Top Therapist Answers"),
+# #     title="🧘 CounselChat Q&A Assistant",
+# #     description="Explain in brief about your problems.",
+# #     allow_flagging="never"
+# # ).launch()
 
 
 
