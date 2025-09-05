@@ -10,7 +10,7 @@ import gradio as gr
 from concurrent.futures import ThreadPoolExecutor
 
 # === Load and clean dataset ===
-df = pd.read_csv("20220401_counsel_chat.zip")
+df = pd.read_csv("20220401_counsel_chat.zip", compression="zip")
 df.dropna(subset=["questionText", "questionTitle", "answerText", "therapistInfo", "therapistURL"], inplace=True)
 df.reset_index(drop=True, inplace=True)
 df["combinedQuestion"] = df["questionTitle"].str.strip() + " - " + df["questionText"].str.strip()
