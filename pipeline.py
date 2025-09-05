@@ -1,4 +1,3 @@
-# %%
 import pandas as pd
 import torch
 import os
@@ -10,7 +9,6 @@ from transformers import pipeline
 import gradio as gr
 from concurrent.futures import ThreadPoolExecutor
 
-# %%
 # === Load and clean dataset ===
 df = pd.read_csv("20220401_counsel_chat.zip")
 df.dropna(subset=["questionText", "questionTitle", "answerText", "therapistInfo", "therapistURL"], inplace=True)
@@ -18,7 +16,6 @@ df.reset_index(drop=True, inplace=True)
 df["combinedQuestion"] = df["questionTitle"].str.strip() + " - " + df["questionText"].str.strip()
 print(df.head())
 
-# %%
 # === Load models ===
 device = "cuda" if torch.cuda.is_available() else "cpu"
 embed_model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
@@ -26,7 +23,6 @@ reranker = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2", device=device)
 summarizer = pipeline("summarization", model="sshleifer/distilbart-cnn-12-6", device=0 if torch.cuda.is_available() else -1)
 
 
-# %%
 # === Embedding + FAISS ===
 EMBED_PATH = "mpnet_embeddings.pt"
 INDEX_PATH = "faiss_index.index"
@@ -48,7 +44,6 @@ else:
     index = faiss.read_index(INDEX_PATH)
 
 
-# %%
 # === Helpers ===
 def hash_text(text: str) -> str:
     return hashlib.md5(text.encode()).hexdigest()
@@ -62,7 +57,6 @@ def build_psychologytoday_url(name: str) -> str:
     return f"https://www.psychologytoday.com/us/therapists?search={query}"
 
 
-# %%
 #display ans
 def format_answer(idx, row, summary):
     therapist = row.therapistInfo.strip()
@@ -94,7 +88,6 @@ def format_answer(idx, row, summary):
 👍 **Upvotes**: {upvotes}
 """
 
-# %%
 def summarize(text):
     key = hash_text(text)
     if key in summary_cache:
@@ -105,7 +98,6 @@ def summarize(text):
     return result
 
 
-# %%
 # === Main pipeline ===
 def process_query(query: str) -> str:
     if not query:
@@ -142,7 +134,7 @@ def process_query(query: str) -> str:
     query_cache[query_key] = full_output
     return full_output
 
-# %%
+
 import pickle
 
 # Save SentenceTransformer
@@ -163,7 +155,7 @@ df.to_pickle("df.pkl")
 faiss.write_index(index, "faiss_index.index")
 
 
-# %%
+
 # === Launch Gradio App ===
 # gr.Interface(
 #     fn=process_query,
